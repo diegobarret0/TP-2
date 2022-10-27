@@ -18,6 +18,7 @@ public class Client extends ClientServices{
     }
 
     public Client(){}
+
     public String getClientUsername() {
         return clientUsername;
     }

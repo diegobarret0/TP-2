@@ -32,7 +32,7 @@ public class InterfaceServices {
     }
 
     /**
-     *Metodo para obtener la <code/>grilla</code> con los registros de la base de datos.
+     *Metodo para obtener la <code/>grilla</code> con los registros de usuarios de la base de datos.
      * @return </code>DefaultTableModel</code>
      * @throws SQLException
      */
@@ -71,6 +71,34 @@ public class InterfaceServices {
         }
         db.disconnect();
         return grilla;
+    }
+
+    /**
+     *Metodo para obtener la <code/>grilla</code> con los registros de equipos de la base de datos.
+     * @return </code>DefaultTableModel</code>
+     * @throws SQLException
+     */
+    public DefaultTableModel getDiviceGrid() throws SQLException {
+        String[] colums = {
+                "id",
+                "codigo",
+                "equipo",
+                "descripcion",
+                "ubicacion",
+        };
+        DefaultTableModel grid = new DefaultTableModel(null, colums);
+        ResultSet datos = db.getData("SELECT * FROM Dispositivos");
+        String[] record = new String[5];
+        while (datos.next()) {
+            record[0] = String.valueOf(datos.getInt("id"));
+            record[1] = datos.getString("codigo_dispositivo");
+            record[2] = datos.getString("equipo");
+            record[3] = datos.getString("descripcion");
+            record[4] = datos.getString("ubicacion");
+            grid.addRow(record);
+        }
+        db.disconnect();
+        return grid;
     }
 
     /**
@@ -236,6 +264,11 @@ public class InterfaceServices {
         }
     }
 
+    public void deleteDivice(int diviceCode) throws SQLException {
+        String sql = String.format("DELETE FROM Dispositivos WHERE codigo_dispositivo = %d;", diviceCode);
+        db.queryUID(sql);
+    }
+
     public void deletePermission(int diviceCode, String clietUsername) throws SQLException {
         String sql = String.format("DELETE FROM Permisos WHERE " +
                 "usuario_cliente = '%s' AND codigo_dispositivo = %d", clietUsername, diviceCode);
@@ -248,5 +281,11 @@ public class InterfaceServices {
                 "VALUES('%s', %d)", clietUsername, diviceCode);
 
             db.queryUID(sql);
+    }
+
+    public void saveNewDivice(int diviceCode, String diviceName, String diviceDescrption, String diviceLocation) throws SQLException {
+        String sql = String.format("INSERT INTO Dispositivos(codigo_dispositivo, equipo, descripcion," +
+                "ubicacion) VALUES (%d, '%s', '%s', '%s')", diviceCode, diviceName, diviceDescrption, diviceLocation);
+        db.queryUID(sql);
     }
 }

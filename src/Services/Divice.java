@@ -15,7 +15,14 @@ public class Divice extends DiviceServices{
         this.description = super.getDiviceDescription();
         this.location = super.getDiviceLocation();
     }
+    public Divice(){}
 
+    public Divice(int diviceCode, String diviceName, String description, String location) {
+        this.diviceCode = diviceCode;
+        this.diviceName = diviceName;
+        this.description = description;
+        this.location = location;
+    }
 
     public int getDiviceCode() {
         return diviceCode;
@@ -48,4 +55,6 @@ public class Divice extends DiviceServices{
     public void setLocation(String location) {
         this.location = location;
     }
+
+
 }
